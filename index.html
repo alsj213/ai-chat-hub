@@ -45,6 +45,11 @@
         }
         body.light .sidebar .title-bar { color: #999; }
 
+        .sidebar .divider {
+            height: 1px; background: #313244; margin: 6px 14px; flex-shrink: 0;
+        }
+        body.light .sidebar .divider { background: #ccc; }
+
         .sb-item {
             display: flex;
             align-items: center;
@@ -268,17 +273,19 @@
 
 <script>
     const svcList = [
-        { name: '豆包',     ico: '🫘', bg: '#1e9b5e', link: 'https://www.doubao.com',        tag: '免费' },
-        { name: 'DeepSeek', ico: '🐋', bg: '#4f6ef7', link: 'https://chat.deepseek.com',     tag: '免费' },
-        { name: '通义千问', ico: '🌐', bg: '#ff6a00', link: 'https://tongyi.aliyun.com',     tag: '免费' },
-        { name: 'Kimi',     ico: '🌙', bg: '#7c3aed', link: 'https://kimi.moonshot.cn',      tag: '免费' },
-        { name: '文心一言', ico: '📝', bg: '#2158f0', link: 'https://yiyan.baidu.com',       tag: '免费' },
-        { name: '智谱清言', ico: '🧠', bg: '#0ba5e9', link: 'https://chatglm.cn',            tag: '免费' },
-        { name: '讯飞星火', ico: '🔥', bg: '#d92e1e', link: 'https://xinghuo.xfyun.cn',      tag: '免费' },
-        { name: '腾讯元宝', ico: '💎', bg: '#0057d9', link: 'https://yuanbao.tencent.com',   tag: '免费' },
-        { name: '百川智能', ico: '🌊', bg: '#0077b6', link: 'https://www.baichuan-ai.com',   tag: '免费' },
-        { name: '天工',     ico: '⚒️', bg: '#e85d2c', link: 'https://www.kunlungp.com',      tag: '免费' },
-        { name: 'MiniMax',  ico: '✨', bg: '#a855f7', link: 'https://www.minimax.com',       tag: '免费' },
+        // ✅ 可嵌入
+        { name: '豆包',     ico: '🫘', bg: '#1e9b5e', link: 'https://www.doubao.com',        embed: true  },
+        { name: '通义千问', ico: '🌐', bg: '#ff6a00', link: 'https://tongyi.aliyun.com',     embed: true  },
+        { name: 'Kimi',     ico: '🌙', bg: '#7c3aed', link: 'https://kimi.moonshot.cn',      embed: true  },
+        { name: '文心一言', ico: '📝', bg: '#2158f0', link: 'https://yiyan.baidu.com',       embed: true  },
+        { name: '讯飞星火', ico: '🔥', bg: '#d92e1e', link: 'https://xinghuo.xfyun.cn',      embed: true  },
+        { name: '腾讯元宝', ico: '💎', bg: '#0057d9', link: 'https://yuanbao.tencent.com',   embed: true  },
+        { name: '百川智能', ico: '🌊', bg: '#0077b6', link: 'https://www.baichuan-ai.com',   embed: true  },
+        // ❌ 不可嵌入（排最下面）
+        { name: 'DeepSeek', ico: '🐋', bg: '#4f6ef7', link: 'https://chat.deepseek.com',     embed: false },
+        { name: '智谱清言', ico: '🧠', bg: '#0ba5e9', link: 'https://chatglm.cn',            embed: false },
+        { name: '天工',     ico: '⚒️', bg: '#e85d2c', link: 'https://www.kunlungp.com',      embed: false },
+        { name: 'MiniMax',  ico: '✨', bg: '#a855f7', link: 'https://www.minimax.com',       embed: false },
     ];
 
     let cur = null;
@@ -287,7 +294,7 @@
 
     function render() {
         const sb = document.getElementById('sidebar');
-        sb.innerHTML = '<div class="title-bar">AI 服务</div>';
+        sb.innerHTML = '<div class="title-bar">可嵌入</div>';
 
         svcList.forEach(s => {
             const btn = document.createElement('button');
@@ -296,10 +303,21 @@
             btn.innerHTML = `
                 <span class="sb-icon" style="background:${s.bg}">${s.ico}</span>
                 <span class="sb-name">${s.name}</span>
-                <span class="sb-tag">${s.tag}</span>
+                <span class="sb-tag">${s.embed ? '◉' : '⊙'}</span>
             `;
             btn.addEventListener('click', () => select(s));
             sb.appendChild(btn);
+
+            // Divider between embeddable and blocked
+            if (s.embed && svcList.filter(x => x.embed).slice(-1)[0]?.name === s.name) {
+                const div = document.createElement('div');
+                div.className = 'divider';
+                sb.appendChild(div);
+                const lbl = document.createElement('div');
+                lbl.className = 'title-bar';
+                lbl.textContent = '需新窗口';
+                sb.appendChild(lbl);
+            }
         });
 
         // Theme toggle
@@ -312,9 +330,7 @@
 
         // Quick shortcuts
         const ql = document.getElementById('quick-list');
-        ['豆包', 'DeepSeek', 'Kimi', '通义千问'].forEach(n => {
-            const s = svcList.find(x => x.name === n);
-            if (!s) return;
+        svcList.filter(s => s.embed).slice(0, 4).forEach(s => {
             const el = document.createElement('span');
             el.textContent = `${s.ico} ${s.name}`;
             el.addEventListener('click', () => select(s));
@@ -330,9 +346,16 @@
         document.getElementById('tb-name').textContent = `${s.ico} ${s.name}`;
         document.getElementById('tb-url').textContent = s.link;
 
-        welcome.style.display = 'none';
-        frame.style.display = 'block';
-        frame.src = s.link;
+        if (s.embed) {
+            welcome.style.display = 'none';
+            frame.style.display = 'block';
+            frame.src = s.link;
+        } else {
+            // 不可嵌入 → 直接弹新窗口
+            welcome.style.display = 'none';
+            frame.style.display = 'none';
+            window.open(s.link, s.name, 'width=1200,height=800');
+        }
     }
 
     function openNewWin() {
