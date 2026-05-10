@@ -11,12 +11,10 @@
             background: #f5f7fa;
             color: #1a1a2e;
             min-height: 100vh;
+            padding-bottom: 80px;
             transition: background 0.3s, color 0.3s;
         }
-        body.dark {
-            background: #0f0f1a;
-            color: #e0e0e0;
-        }
+        body.dark { background: #0f0f1a; color: #e0e0e0; }
 
         /* Header */
         header {
@@ -25,232 +23,147 @@
             padding: 40px 20px 30px;
             text-align: center;
         }
-        body.dark header {
-            background: linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%);
-        }
-        header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        header p {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
+        body.dark header { background: linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%); }
+        header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+        header p { font-size: 1rem; opacity: 0.9; }
 
         /* Theme toggle */
         .theme-toggle {
-            position: fixed;
-            top: 16px;
-            right: 20px;
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            font-size: 1.3rem;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            backdrop-filter: blur(4px);
-            z-index: 100;
+            position: fixed; top: 16px; right: 20px;
+            background: rgba(255,255,255,0.2); border: none; color: white;
+            font-size: 1.3rem; width: 40px; height: 40px; border-radius: 50%;
+            cursor: pointer; backdrop-filter: blur(4px); z-index: 100;
             transition: background 0.2s;
         }
         .theme-toggle:hover { background: rgba(255,255,255,0.35); }
 
         /* Search & Filter */
         .controls {
-            max-width: 800px;
-            margin: 24px auto 0;
-            padding: 0 20px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
+            max-width: 800px; margin: 24px auto 0; padding: 0 20px;
+            display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
         }
         .search-input {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px 18px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            outline: none;
-            background: white;
-            color: #333;
-            transition: border-color 0.2s;
+            flex: 1; min-width: 200px; padding: 12px 18px;
+            border: 2px solid #e0e0e0; border-radius: 12px; font-size: 0.95rem;
+            outline: none; background: white; color: #333; transition: border-color 0.2s;
         }
         .search-input:focus { border-color: #667eea; }
-        body.dark .search-input {
-            background: #1e1e32;
-            border-color: #333;
-            color: #e0e0e0;
-        }
+        body.dark .search-input { background: #1e1e32; border-color: #333; color: #e0e0e0; }
         body.dark .search-input:focus { border-color: #667eea; }
 
-        .tabs {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
+        .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
         .tab {
-            padding: 10px 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            background: white;
-            color: #666;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.2s;
+            padding: 10px 20px; border: 2px solid #e0e0e0; border-radius: 12px;
+            background: white; color: #666; cursor: pointer; font-size: 0.9rem;
+            font-weight: 500; transition: all 0.2s;
         }
         .tab:hover { border-color: #667eea; color: #667eea; }
-        .tab.active {
-            background: #667eea;
-            border-color: #667eea;
-            color: white;
-        }
-        body.dark .tab {
-            background: #1e1e32;
-            border-color: #333;
-            color: #999;
-        }
+        .tab.active { background: #667eea; border-color: #667eea; color: white; }
+        body.dark .tab { background: #1e1e32; border-color: #333; color: #999; }
         body.dark .tab:hover { border-color: #667eea; color: #667eea; }
-        body.dark .tab.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
+        body.dark .tab.active { background: #667eea; color: white; border-color: #667eea; }
 
-        /* Stats bar */
-        .stats {
-            text-align: center;
-            margin-top: 12px;
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.7);
-        }
+        .stats { text-align: center; margin-top: 12px; font-size: 0.85rem; color: rgba(255,255,255,0.7); }
 
         /* Card Grid */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 24px 20px 60px;
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin: 32px 0 16px;
-            padding-left: 4px;
-            color: #555;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 24px 20px 60px; }
+        .section-title { font-size: 1.2rem; font-weight: 600; margin: 32px 0 16px; padding-left: 4px; color: #555; }
         body.dark .section-title { color: #999; }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
 
         /* Card */
         .card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            text-decoration: none;
-            color: inherit;
-            border: 1px solid #eee;
-            transition: all 0.25s ease;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
+            background: white; border-radius: 16px; padding: 20px; cursor: pointer;
+            color: inherit; border: 1px solid #eee; transition: all 0.25s ease;
+            display: flex; flex-direction: column; position: relative; overflow: hidden;
+            user-select: none;
         }
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
-            border-color: #667eea;
+            transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); border-color: #667eea;
         }
-        body.dark .card {
-            background: #1a1a30;
-            border-color: #2a2a45;
-        }
-        body.dark .card:hover {
-            box-shadow: 0 12px 32px rgba(0,0,0,0.4);
-            border-color: #667eea;
-        }
+        body.dark .card { background: #1a1a30; border-color: #2a2a45; }
+        body.dark .card:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.4); border-color: #667eea; }
 
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
         .card-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: white;
-            flex-shrink: 0;
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; font-weight: 700; color: white; flex-shrink: 0;
         }
-        .card-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        .card-company {
-            font-size: 0.8rem;
-            color: #999;
-            margin-top: 1px;
-        }
-        .card-desc {
-            font-size: 0.88rem;
-            color: #888;
-            line-height: 1.5;
-            flex: 1;
-        }
+        .card-name { font-size: 1.1rem; font-weight: 600; }
+        .card-company { font-size: 0.8rem; color: #999; margin-top: 1px; }
+        .card-desc { font-size: 0.88rem; color: #888; line-height: 1.5; flex: 1; }
         .card-tag {
-            display: inline-block;
-            margin-top: 10px;
-            font-size: 0.75rem;
-            padding: 3px 10px;
-            border-radius: 20px;
-            align-self: flex-start;
+            display: inline-block; margin-top: 10px; font-size: 0.75rem;
+            padding: 3px 10px; border-radius: 20px; align-self: flex-start;
         }
         .tag-free { background: #e8f5e9; color: #2e7d32; }
         .tag-limited { background: #fff3e0; color: #e65100; }
         body.dark .tag-free { background: #1b3d1b; color: #81c784; }
         body.dark .tag-limited { background: #3d2e1b; color: #ffb74d; }
 
-        .card-arrow {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            font-size: 1rem;
-            color: #ccc;
-            transition: transform 0.2s;
-        }
-        .card:hover .card-arrow {
-            transform: translateX(4px);
-            color: #667eea;
-        }
-
+        .card-arrow { position: absolute; top: 16px; right: 16px; font-size: 1rem; color: #ccc; transition: transform 0.2s; }
+        .card:hover .card-arrow { transform: translateX(4px); color: #667eea; }
         .card.hidden { display: none; }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 24px;
-            font-size: 0.8rem;
-            color: #aaa;
-            border-top: 1px solid #eee;
+        /* Opened / Now button on card */
+        .card-status {
+            position: absolute; bottom: 16px; right: 16px;
+            font-size: 0.7rem; padding: 2px 8px; border-radius: 10px;
+            background: #667eea; color: white; opacity: 0;
+            transition: opacity 0.2s; pointer-events: none;
         }
+        .card-status.open { opacity: 1; }
+
+        /* Dock */
+        .dock {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid #e0e0e0;
+            padding: 8px 16px;
+            display: flex; align-items: center; gap: 8px;
+            z-index: 1000;
+            transition: background 0.3s, border-color 0.3s;
+            overflow-x: auto;
+        }
+        body.dark .dock { background: rgba(20,20,40,0.88); border-top-color: #333; }
+
+        .dock-label {
+            font-size: 0.75rem; color: #999; white-space: nowrap;
+            padding-right: 8px; border-right: 1px solid #ddd; flex-shrink: 0;
+        }
+        body.dark .dock-label { border-right-color: #444; }
+
+        .dock-item {
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 12px; border-radius: 8px;
+            background: transparent; border: 1px solid transparent;
+            cursor: pointer; font-size: 0.82rem; color: #555;
+            white-space: nowrap; flex-shrink: 0;
+            transition: all 0.15s;
+        }
+        .dock-item:hover { background: rgba(102,126,234,0.1); border-color: rgba(102,126,234,0.3); }
+        .dock-item.focused { background: #667eea; color: white; }
+        body.dark .dock-item { color: #bbb; }
+        body.dark .dock-item:hover { background: rgba(102,126,234,0.2); }
+        body.dark .dock-item.focused { background: #667eea; color: white; }
+
+        .dock-item .dot {
+            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+        }
+        .dock-item .close-btn {
+            margin-left: 4px; font-size: 0.8rem; opacity: 0.4;
+            background: none; border: none; cursor: pointer; color: inherit;
+            line-height: 1; padding: 0 2px;
+        }
+        .dock-item .close-btn:hover { opacity: 1; }
+        .dock-empty { font-size: 0.82rem; color: #bbb; padding: 6px 0; }
+
+        /* Footer */
+        footer { text-align: center; padding: 24px; font-size: 0.8rem; color: #aaa; border-top: 1px solid #eee; }
         body.dark footer { border-color: #222; }
 
-        /* Responsive */
         @media (max-width: 600px) {
             header h1 { font-size: 1.5rem; }
             .grid { grid-template-columns: 1fr; }
@@ -263,7 +176,7 @@
 
 <header>
     <h1>AI Chat Hub</h1>
-    <p>一站式 AI 对话导航 · 汇集全球主流 AI 聊天服务</p>
+    <p>一站式 AI 对话导航 · 点击卡片直接打开 AI 服务</p>
 
     <div class="controls">
         <input class="search-input" id="search" type="text" placeholder="搜索 AI 服务名称..." oninput="filterCards()" />
@@ -281,12 +194,20 @@
 <div class="container">
     <div class="section-title">海外服务</div>
     <div class="grid" id="overseas-grid"></div>
-
     <div class="section-title">国内服务</div>
     <div class="grid" id="domestic-grid"></div>
 </div>
 
-<footer>数据更新于 2026 年 5 月 · 所有链接均为各服务官方网站</footer>
+<footer>数据更新于 2026 年 5 月 · 点击卡片打开 AI 服务，底部 Dock 管理已打开的服务</footer>
+
+<!-- Dock -->
+<div class="dock" id="dock">
+    <span class="dock-label">已打开</span>
+    <div class="dock-empty" id="dock-empty">暂无，点击卡片打开 AI 服务</div>
+    <div id="dock-items" style="display:flex;gap:6px;"></div>
+    <span style="flex:1;"></span>
+    <span id="dock-count" style="font-size:0.75rem;color:#999;white-space:nowrap;"></span>
+</div>
 
 <script>
     const colors = [
@@ -318,6 +239,113 @@
         { name: 'MiniMax',    company: 'MiniMax',       link: 'https://www.minimax.com',        desc: '长文本推理新锐，性价比与对话体验出色',                    tag: '免费版可用', tagType: 'limited', group: 'domestic' },
     ];
 
+    // ─── Opened windows tracking ───
+    const opened = new Map(); // key: name, value: { window, name, company, color, focused }
+
+    function updateDock() {
+        const container = document.getElementById('dock-items');
+        const empty = document.getElementById('dock-empty');
+        const count = document.getElementById('dock-count');
+        container.innerHTML = '';
+
+        // Clean closed windows
+        for (const [name, entry] of opened) {
+            if (entry.window && entry.window.closed) {
+                opened.delete(name);
+                updateCardStatus(name, false);
+            }
+        }
+
+        if (opened.size === 0) {
+            empty.style.display = 'block';
+            count.textContent = '';
+            return;
+        }
+        empty.style.display = 'none';
+        count.textContent = `${opened.size} 个`;
+
+        for (const [name, entry] of opened) {
+            const item = document.createElement('div');
+            item.className = 'dock-item' + (entry.focused ? ' focused' : '');
+            item.innerHTML = `
+                <span class="dot" style="background:${entry.color}"></span>
+                <span>${entry.name}</span>
+                <button class="close-btn" title="关闭">✕</button>
+            `;
+            // Click item → focus window
+            item.addEventListener('click', (e) => {
+                if (e.target.closest('.close-btn')) return;
+                if (entry.window && !entry.window.closed) {
+                    entry.window.focus();
+                }
+            });
+            // Close button
+            item.querySelector('.close-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (entry.window && !entry.window.closed) entry.window.close();
+                opened.delete(name);
+                updateCardStatus(name, false);
+                updateDock();
+            });
+            container.appendChild(item);
+        }
+    }
+
+    function updateCardStatus(name, isOpen) {
+        document.querySelectorAll('.card').forEach(card => {
+            if (card.dataset.name === name) {
+                const status = card.querySelector('.card-status') || (() => {
+                    const el = document.createElement('div');
+                    el.className = 'card-status';
+                    card.appendChild(el);
+                    return el;
+                })();
+                el.textContent = '已打开';
+                el.classList.toggle('open', isOpen);
+            }
+        });
+    }
+
+    function openService(svc) {
+        // If already open and not closed, focus it
+        const existing = opened.get(svc.name);
+        if (existing && existing.window && !existing.window.closed) {
+            existing.window.focus();
+            // Mark as focused
+            for (const [, e] of opened) e.focused = false;
+            existing.focused = true;
+            updateDock();
+            return;
+        }
+
+        // Open new window
+        const w = window.open(svc.link, svc.name, 'width=1200,height=800,menubar=no,toolbar=no,location=yes,status=yes');
+        if (!w) {
+            // Popup blocked — fallback to direct navigation
+            window.open(svc.link, '_blank');
+            return;
+        }
+
+        // Mark all as not focused, then set this one
+        for (const [, e] of opened) e.focused = false;
+        opened.set(svc.name, { window: w, name: svc.name, company: svc.company, color: svc._color, focused: true });
+        updateCardStatus(svc.name, true);
+        updateDock();
+
+        // Poll for window close
+        const poll = setInterval(() => {
+            if (w.closed) {
+                clearInterval(poll);
+                if (opened.has(svc.name)) {
+                    opened.delete(svc.name);
+                    updateCardStatus(svc.name, false);
+                    updateDock();
+                }
+            }
+        }, 1000);
+    }
+
+    // ─── Render Cards ───
     function getInitials(name) {
         return /^[a-zA-Z]/.test(name) ? name.charAt(0).toUpperCase() : name.charAt(0);
     }
@@ -325,12 +353,12 @@
     function renderCards() {
         ['overseas', 'domestic'].forEach(group => {
             const grid = document.getElementById(group + '-grid');
-            services.filter(s => s.group === group).forEach((svc, i) => {
-                const color = colors[services.indexOf(svc) % colors.length];
-                const card = document.createElement('a');
-                card.href = svc.link;
-                card.target = '_blank';
-                card.rel = 'noopener noreferrer';
+            services.filter(s => s.group === group).forEach((svc) => {
+                const idx = services.indexOf(svc);
+                const color = colors[idx % colors.length];
+                svc._color = color;
+
+                const card = document.createElement('div');
                 card.className = 'card';
                 card.dataset.name = svc.name;
                 card.dataset.group = svc.group;
@@ -346,12 +374,14 @@
                     <div class="card-desc">${svc.desc}</div>
                     <span class="card-tag ${svc.tagType === 'free' ? 'tag-free' : 'tag-limited'}">${svc.tag}</span>
                 `;
+                card.addEventListener('click', () => openService(svc));
                 grid.appendChild(card);
             });
         });
         updateStats();
     }
 
+    // ─── Filter ───
     let currentFilter = 'all';
 
     function setFilter(filter, btn) {
