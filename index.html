@@ -3,210 +3,332 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Chat Hub - 一站式AI对话导航</title>
+    <title>AI Chat Hub</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: #f5f7fa;
-            color: #1a1a2e;
-            min-height: 100vh;
-            padding-bottom: 80px;
-            transition: background 0.3s, color 0.3s;
+            background: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            transition: background 0.3s;
         }
-        body.dark { background: #0f0f1a; color: #e0e0e0; }
+        body.light { background: #f5f5f5; color: #333; }
 
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* ─── Left Sidebar ─── */
+        .sidebar {
+            width: 64px;
+            background: #181825;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 0;
+            gap: 2px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            border-right: 1px solid #313244;
+            z-index: 10;
+        }
+        body.light .sidebar {
+            background: #e8e8e8;
+            border-right-color: #ccc;
+        }
+
+        .sidebar .divider {
+            width: 32px;
+            height: 1px;
+            background: #45475a;
+            margin: 6px 0;
+            flex-shrink: 0;
+        }
+        body.light .sidebar .divider { background: #bbb; }
+
+        .sb-item {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s;
+            flex-shrink: 0;
+            border: none;
+            background: transparent;
+            color: #a6adc8;
+            font-size: 0.7rem;
+            writing-mode: vertical-rl;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+        .sb-item:hover { background: rgba(255,255,255,0.08); color: #cdd6f4; }
+        .sb-item.active {
+            background: #cba6f7;
+            color: #1e1e2e;
+            font-weight: 700;
+            box-shadow: 0 0 12px rgba(203,166,247,0.3);
+        }
+        body.light .sb-item { color: #666; }
+        body.light .sb-item:hover { background: rgba(0,0,0,0.06); color: #333; }
+        body.light .sb-item.active {
+            background: #7c3aed;
             color: white;
-            padding: 40px 20px 30px;
-            text-align: center;
+            box-shadow: 0 0 12px rgba(124,58,237,0.25);
         }
-        body.dark header { background: linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%); }
-        header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
-        header p { font-size: 1rem; opacity: 0.9; }
 
-        /* Theme toggle */
-        .theme-toggle {
-            position: fixed; top: 16px; right: 20px;
-            background: rgba(255,255,255,0.2); border: none; color: white;
-            font-size: 1.3rem; width: 40px; height: 40px; border-radius: 50%;
-            cursor: pointer; backdrop-filter: blur(4px); z-index: 100;
-            transition: background 0.2s;
+        .sb-item .indicator {
+            position: absolute;
+            left: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            border-radius: 0 3px 3px 0;
+            background: #cba6f7;
+            opacity: 0;
+            transition: opacity 0.15s;
         }
-        .theme-toggle:hover { background: rgba(255,255,255,0.35); }
+        .sb-item.active .indicator { opacity: 1; }
+        body.light .sb-item .indicator { background: #7c3aed; }
 
-        /* Search & Filter */
-        .controls {
-            max-width: 800px; margin: 24px auto 0; padding: 0 20px;
-            display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+        .sb-item .dot {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            border: 2px solid #181825;
         }
-        .search-input {
-            flex: 1; min-width: 200px; padding: 12px 18px;
-            border: 2px solid #e0e0e0; border-radius: 12px; font-size: 0.95rem;
-            outline: none; background: white; color: #333; transition: border-color 0.2s;
+        body.light .sb-item .dot { border-color: #e8e8e8; }
+
+        /* ─── Top Bar ─── */
+        .topbar {
+            height: 40px;
+            background: #181825;
+            border-bottom: 1px solid #313244;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+            flex-shrink: 0;
         }
-        .search-input:focus { border-color: #667eea; }
-        body.dark .search-input { background: #1e1e32; border-color: #333; color: #e0e0e0; }
-        body.dark .search-input:focus { border-color: #667eea; }
-
-        .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
-        .tab {
-            padding: 10px 20px; border: 2px solid #e0e0e0; border-radius: 12px;
-            background: white; color: #666; cursor: pointer; font-size: 0.9rem;
-            font-weight: 500; transition: all 0.2s;
+        body.light .topbar {
+            background: #e8e8e8;
+            border-bottom-color: #ccc;
         }
-        .tab:hover { border-color: #667eea; color: #667eea; }
-        .tab.active { background: #667eea; border-color: #667eea; color: white; }
-        body.dark .tab { background: #1e1e32; border-color: #333; color: #999; }
-        body.dark .tab:hover { border-color: #667eea; color: #667eea; }
-        body.dark .tab.active { background: #667eea; color: white; border-color: #667eea; }
 
-        .stats { text-align: center; margin-top: 12px; font-size: 0.85rem; color: rgba(255,255,255,0.7); }
-
-        /* Card Grid */
-        .container { max-width: 1200px; margin: 0 auto; padding: 24px 20px 60px; }
-        .section-title { font-size: 1.2rem; font-weight: 600; margin: 32px 0 16px; padding-left: 4px; color: #555; }
-        body.dark .section-title { color: #999; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-
-        /* Card */
-        .card {
-            background: white; border-radius: 16px; padding: 20px; cursor: pointer;
-            color: inherit; border: 1px solid #eee; transition: all 0.25s ease;
-            display: flex; flex-direction: column; position: relative; overflow: hidden;
-            user-select: none;
+        .topbar .title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #cdd6f4;
         }
-        .card:hover {
-            transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); border-color: #667eea;
-        }
-        body.dark .card { background: #1a1a30; border-color: #2a2a45; }
-        body.dark .card:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.4); border-color: #667eea; }
+        body.light .topbar .title { color: #333; }
 
-        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-        .card-icon {
-            width: 44px; height: 44px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem; font-weight: 700; color: white; flex-shrink: 0;
+        .topbar .url-bar {
+            flex: 1;
+            max-width: 500px;
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid #45475a;
+            background: #313244;
+            color: #a6adc8;
+            font-size: 0.75rem;
+            font-family: monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .card-name { font-size: 1.1rem; font-weight: 600; }
-        .card-company { font-size: 0.8rem; color: #999; margin-top: 1px; }
-        .card-desc { font-size: 0.88rem; color: #888; line-height: 1.5; flex: 1; }
-        .card-tag {
-            display: inline-block; margin-top: 10px; font-size: 0.75rem;
-            padding: 3px 10px; border-radius: 20px; align-self: flex-start;
+        body.light .topbar .url-bar {
+            background: #ddd;
+            border-color: #bbb;
+            color: #666;
         }
-        .tag-free { background: #e8f5e9; color: #2e7d32; }
-        .tag-limited { background: #fff3e0; color: #e65100; }
-        body.dark .tag-free { background: #1b3d1b; color: #81c784; }
-        body.dark .tag-limited { background: #3d2e1b; color: #ffb74d; }
 
-        .card-arrow { position: absolute; top: 16px; right: 16px; font-size: 1rem; color: #ccc; transition: transform 0.2s; }
-        .card:hover .card-arrow { transform: translateX(4px); color: #667eea; }
-        .card.hidden { display: none; }
-
-        /* Opened / Now button on card */
-        .card-status {
-            position: absolute; bottom: 16px; right: 16px;
-            font-size: 0.7rem; padding: 2px 8px; border-radius: 10px;
-            background: #667eea; color: white; opacity: 0;
-            transition: opacity 0.2s; pointer-events: none;
+        .topbar .actions {
+            display: flex;
+            gap: 6px;
+            margin-left: auto;
         }
-        .card-status.open { opacity: 1; }
-
-        /* Dock */
-        .dock {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border-top: 1px solid #e0e0e0;
-            padding: 8px 16px;
-            display: flex; align-items: center; gap: 8px;
-            z-index: 1000;
-            transition: background 0.3s, border-color 0.3s;
-            overflow-x: auto;
-        }
-        body.dark .dock { background: rgba(20,20,40,0.88); border-top-color: #333; }
-
-        .dock-label {
-            font-size: 0.75rem; color: #999; white-space: nowrap;
-            padding-right: 8px; border-right: 1px solid #ddd; flex-shrink: 0;
-        }
-        body.dark .dock-label { border-right-color: #444; }
-
-        .dock-item {
-            display: flex; align-items: center; gap: 6px;
-            padding: 6px 12px; border-radius: 8px;
-            background: transparent; border: 1px solid transparent;
-            cursor: pointer; font-size: 0.82rem; color: #555;
-            white-space: nowrap; flex-shrink: 0;
+        .topbar .actions button {
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid #45475a;
+            background: transparent;
+            color: #a6adc8;
+            cursor: pointer;
+            font-size: 0.75rem;
             transition: all 0.15s;
         }
-        .dock-item:hover { background: rgba(102,126,234,0.1); border-color: rgba(102,126,234,0.3); }
-        .dock-item.focused { background: #667eea; color: white; }
-        body.dark .dock-item { color: #bbb; }
-        body.dark .dock-item:hover { background: rgba(102,126,234,0.2); }
-        body.dark .dock-item.focused { background: #667eea; color: white; }
-
-        .dock-item .dot {
-            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+        .topbar .actions button:hover {
+            background: #45475a;
+            color: #cdd6f4;
         }
-        .dock-item .close-btn {
-            margin-left: 4px; font-size: 0.8rem; opacity: 0.4;
-            background: none; border: none; cursor: pointer; color: inherit;
-            line-height: 1; padding: 0 2px;
+        body.light .topbar .actions button {
+            border-color: #bbb;
+            color: #666;
         }
-        .dock-item .close-btn:hover { opacity: 1; }
-        .dock-empty { font-size: 0.82rem; color: #bbb; padding: 6px 0; }
+        body.light .topbar .actions button:hover {
+            background: #ccc;
+            color: #333;
+        }
 
-        /* Footer */
-        footer { text-align: center; padding: 24px; font-size: 0.8rem; color: #aaa; border-top: 1px solid #eee; }
-        body.dark footer { border-color: #222; }
+        /* ─── Main Content Area ─── */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .content {
+            flex: 1;
+            position: relative;
+            background: #1e1e2e;
+        }
+        body.light .content { background: #f5f5f5; }
 
-        @media (max-width: 600px) {
-            header h1 { font-size: 1.5rem; }
-            .grid { grid-template-columns: 1fr; }
-            .controls { flex-direction: column; }
-            .tabs { justify-content: center; }
+        .content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Welcome screen */
+        .welcome {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: #6c7086;
+            text-align: center;
+            padding: 40px;
+        }
+        body.light .welcome { color: #999; }
+
+        .welcome h2 { font-size: 1.5rem; font-weight: 600; color: #a6adc8; }
+        body.light .welcome h2 { color: #666; }
+        .welcome p { font-size: 0.9rem; max-width: 400px; line-height: 1.6; }
+        .welcome .shortcuts {
+            display: flex; gap: 16px; margin-top: 8px;
+        }
+        .welcome .shortcuts span {
+            padding: 6px 14px; border-radius: 8px;
+            background: #313244; color: #a6adc8;
+            font-size: 0.8rem; cursor: pointer;
+            transition: all 0.15s;
+        }
+        body.light .welcome .shortcuts span {
+            background: #e0e0e0; color: #666;
+        }
+        .welcome .shortcuts span:hover {
+            background: #cba6f7; color: #1e1e2e;
+        }
+        body.light .welcome .shortcuts span:hover {
+            background: #7c3aed; color: white;
+        }
+
+        /* Blocked/error overlay */
+        .embed-error {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: #1e1e2e;
+            color: #6c7086;
+            padding: 40px;
+            text-align: center;
+        }
+        body.light .embed-error { background: #f5f5f5; color: #999; }
+        .embed-error h3 { color: #f38ba8; font-size: 1.1rem; }
+        body.light .embed-error h3 { color: #e64553; }
+        .embed-error .btn-open {
+            padding: 8px 24px;
+            border-radius: 8px;
+            background: #cba6f7;
+            color: #1e1e2e;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.15s;
+        }
+        .embed-error .btn-open:hover { background: #b4befe; }
+        body.light .embed-error .btn-open {
+            background: #7c3aed;
+            color: white;
+        }
+        body.light .embed-error .btn-open:hover { background: #6d28d9; }
+
+        /* ─── Scrollbar ─── */
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #45475a; border-radius: 3px; }
+        body.light .sidebar::-webkit-scrollbar-thumb { background: #bbb; }
+
+        /* ─── Theme toggle ─── */
+        .theme-btn {
+            margin-top: auto;
+            width: 48px; height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: #6c7086;
+            font-size: 1.1rem;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        .theme-btn:hover { background: rgba(255,255,255,0.08); color: #cdd6f4; }
+        body.light .theme-btn:hover { background: rgba(0,0,0,0.06); color: #333; }
+
+        @media (max-width: 700px) {
+            .sidebar { width: 48px; }
+            .sb-item { width: 36px; height: 36px; font-size: 0.6rem; }
+            .sidebar .divider { width: 24px; }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>AI Chat Hub</h1>
-    <p>一站式 AI 对话导航 · 点击卡片直接打开 AI 服务</p>
+<!-- ─── Sidebar ─── -->
+<nav class="sidebar" id="sidebar"></nav>
 
-    <div class="controls">
-        <input class="search-input" id="search" type="text" placeholder="搜索 AI 服务名称..." oninput="filterCards()" />
-        <div class="tabs">
-            <button class="tab active" data-filter="all" onclick="setFilter('all', this)">全部</button>
-            <button class="tab" data-filter="overseas" onclick="setFilter('overseas', this)">海外</button>
-            <button class="tab" data-filter="domestic" onclick="setFilter('domestic', this)">国内</button>
+<!-- ─── Main ─── -->
+<div class="main">
+    <div class="topbar">
+        <span class="title" id="tb-title">选择一个 AI 服务</span>
+        <span class="url-bar" id="tb-url"></span>
+        <div class="actions">
+            <button id="btn-open" title="在新窗口打开" onclick="openInNewWindow()">↗ 新窗口</button>
+            <button id="btn-refresh" title="刷新" onclick="refreshIframe()">⟳</button>
         </div>
     </div>
-    <div class="stats" id="stats"></div>
-</header>
-
-<button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
-
-<div class="container">
-    <div class="section-title">海外服务</div>
-    <div class="grid" id="overseas-grid"></div>
-    <div class="section-title">国内服务</div>
-    <div class="grid" id="domestic-grid"></div>
-</div>
-
-<footer>数据更新于 2026 年 5 月 · 点击卡片打开 AI 服务，底部 Dock 管理已打开的服务</footer>
-
-<!-- Dock -->
-<div class="dock" id="dock">
-    <span class="dock-label">已打开</span>
-    <div class="dock-empty" id="dock-empty">暂无，点击卡片打开 AI 服务</div>
-    <div id="dock-items" style="display:flex;gap:6px;"></div>
-    <span style="flex:1;"></span>
-    <span id="dock-count" style="font-size:0.75rem;color:#999;white-space:nowrap;"></span>
+    <div class="content" id="content-area">
+        <!-- Welcome -->
+        <div class="welcome" id="welcome">
+            <h2>AI Chat Hub</h2>
+            <p>左侧选择 AI 服务，即可在此嵌入使用。部分服务可能限制嵌入，届时可点击「新窗口」打开。</p>
+            <div class="shortcuts" id="quick-list"></div>
+        </div>
+        <!-- iframe -->
+        <iframe id="main-frame" style="display:none;" sandbox="allow-scripts allow-forms allow-same-origin allow-popups" loading="lazy"></iframe>
+        <!-- Error overlay (hidden by default) -->
+        <div class="embed-error" id="embed-error" style="display:none;">
+            <h3>⚠️ 此服务可能不支持嵌入</h3>
+            <p id="error-msg">该网站限制了在 iframe 中显示，点击「新窗口」按钮在独立窗口中打开。</p>
+            <a class="btn-open" id="error-link" href="#" target="_blank">在新窗口打开</a>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -218,207 +340,135 @@
     ];
 
     const services = [
-        { name: 'ChatGPT',    company: 'OpenAI',        link: 'https://chat.openai.com',        desc: '全球最具影响力的 AI 对话助手，综合能力全面',              tag: '免费版可用', tagType: 'limited', group: 'overseas' },
-        { name: 'Claude',     company: 'Anthropic',     link: 'https://claude.ai',              desc: '长文理解与写作质感出色，编程与代码审查能力强',            tag: '免费版可用', tagType: 'limited', group: 'overseas' },
-        { name: 'Gemini',     company: 'Google',        link: 'https://gemini.google.com',      desc: 'Google 多模态旗舰，原生支持图文音视频理解',              tag: '免费',       tagType: 'free',    group: 'overseas' },
-        { name: 'Copilot',    company: 'Microsoft',     link: 'https://copilot.microsoft.com',  desc: '微软 AI 助手，Office / Windows 深度集成',               tag: '免费',       tagType: 'free',    group: 'overseas' },
-        { name: 'Perplexity', company: 'Perplexity AI', link: 'https://www.perplexity.ai',      desc: 'AI 搜索引擎，带来源引用的深度研究助手',                  tag: '免费版可用', tagType: 'limited', group: 'overseas' },
-        { name: 'Grok',       company: 'xAI',           link: 'https://grok.com',               desc: '实时信息与社交平台语境分析，适合热点追踪',                tag: '部分免费',   tagType: 'limited', group: 'overseas' },
-        { name: 'Mistral',    company: 'Mistral AI',    link: 'https://chat.mistral.ai',        desc: '法国 AI 新锐，Le Chat 对话体验简洁高效',                 tag: '免费版可用', tagType: 'limited', group: 'overseas' },
-
-        { name: '豆包',       company: '字节跳动',      link: 'https://www.doubao.com',         desc: '中文交互自然流畅，完全免费无限制，上手门槛极低',          tag: '完全免费',   tagType: 'free',    group: 'domestic' },
-        { name: 'DeepSeek',   company: '深度求索',      link: 'https://chat.deepseek.com',      desc: '高性价比，推理与编程能力突出，完全免费开源',              tag: '完全免费',   tagType: 'free',    group: 'domestic' },
-        { name: '通义千问',   company: '阿里巴巴',      link: 'https://tongyi.aliyun.com',      desc: '中文通用能力强，Qwen 开源生态全球影响力领先',             tag: '免费额度',   tagType: 'limited', group: 'domestic' },
-        { name: 'Kimi',       company: '月之暗面',      link: 'https://kimi.moonshot.cn',       desc: '超长上下文处理，文档阅读与深度研究能力行业领先',          tag: '基础免费',   tagType: 'limited', group: 'domestic' },
-        { name: '文心一言',   company: '百度',          link: 'https://yiyan.baidu.com',        desc: '中文理解与创作能力突出，深度整合百度搜索生态',            tag: '基础免费',   tagType: 'limited', group: 'domestic' },
-        { name: '智谱清言',   company: '智谱 AI',       link: 'https://chatglm.cn',             desc: '清华系 AI，GLM 生态，推理编程与 Agent 能力领先',         tag: '免费',       tagType: 'free',    group: 'domestic' },
-        { name: '讯飞星火',   company: '科大讯飞',      link: 'https://xinghuo.xfyun.cn',       desc: '知识问答与教育场景突出，智能体生态丰富',                  tag: '免费版可用', tagType: 'limited', group: 'domestic' },
-        { name: '腾讯元宝',   company: '腾讯',          link: 'https://yuanbao.tencent.com',    desc: '腾讯出品，社交聊天与生活助手场景体验友好',                tag: '免费',       tagType: 'free',    group: 'domestic' },
-        { name: '百川智能',   company: '百川',          link: 'https://www.baichuan-ai.com',    desc: '中文通用大模型，搜索增强与知识问答能力',                  tag: '免费版可用', tagType: 'limited', group: 'domestic' },
-        { name: '天工',       company: '昆仑万维',      link: 'https://www.kunlungp.com',       desc: '多语言大模型，内容创作与办公自动化场景',                  tag: '免费版可用', tagType: 'limited', group: 'domestic' },
-        { name: 'MiniMax',    company: 'MiniMax',       link: 'https://www.minimax.com',        desc: '长文本推理新锐，性价比与对话体验出色',                    tag: '免费版可用', tagType: 'limited', group: 'domestic' },
+        { name: 'ChatGPT',    company: 'OpenAI',        link: 'https://chat.openai.com',        desc: '综合能力全面的 AI 对话助手',           group: 'overseas' },
+        { name: 'Claude',     company: 'Anthropic',     link: 'https://claude.ai',              desc: '长文理解与写作质感出色',               group: 'overseas' },
+        { name: 'Gemini',     company: 'Google',        link: 'https://gemini.google.com',      desc: 'Google 多模态旗舰',                   group: 'overseas' },
+        { name: 'Copilot',    company: 'Microsoft',     link: 'https://copilot.microsoft.com',  desc: 'Office / Windows 深度集成',            group: 'overseas' },
+        { name: 'Perplexity', company: 'Perplexity AI', link: 'https://www.perplexity.ai',      desc: '带来源引用的研究助手',                 group: 'overseas' },
+        { name: 'Grok',       company: 'xAI',           link: 'https://grok.com',               desc: '实时信息与社交平台语境分析',            group: 'overseas' },
+        { name: 'Mistral',    company: 'Mistral AI',    link: 'https://chat.mistral.ai',        desc: '法国 AI 新锐，简洁高效',               group: 'overseas' },
+        // domestic
+        { name: '豆包',       company: '字节跳动',      link: 'https://www.doubao.com',         desc: '完全免费，中文交互自然流畅',            group: 'domestic' },
+        { name: 'DeepSeek',   company: '深度求索',      link: 'https://chat.deepseek.com',      desc: '推理编程突出，完全免费开源',            group: 'domestic' },
+        { name: '通义千问',   company: '阿里巴巴',      link: 'https://tongyi.aliyun.com',      desc: '中文通用能力强，开源生态领先',          group: 'domestic' },
+        { name: 'Kimi',       company: '月之暗面',      link: 'https://kimi.moonshot.cn',       desc: '超长上下文，文档阅读行业领先',          group: 'domestic' },
+        { name: '文心一言',   company: '百度',          link: 'https://yiyan.baidu.com',        desc: '中文理解创作突出，搜索生态',            group: 'domestic' },
+        { name: '智谱清言',   company: '智谱 AI',       link: 'https://chatglm.cn',             desc: '清华系，推理编程与 Agent 领先',         group: 'domestic' },
+        { name: '讯飞星火',   company: '科大讯飞',      link: 'https://xinghuo.xfyun.cn',       desc: '知识问答与教育场景突出',               group: 'domestic' },
+        { name: '腾讯元宝',   company: '腾讯',          link: 'https://yuanbao.tencent.com',    desc: '社交聊天与生活助手体验',               group: 'domestic' },
+        { name: '百川智能',   company: '百川',          link: 'https://www.baichuan-ai.com',    desc: '搜索增强与知识问答',                   group: 'domestic' },
+        { name: '天工',       company: '昆仑万维',      link: 'https://www.kunlungp.com',       desc: '内容创作与办公自动化',                 group: 'domestic' },
+        { name: 'MiniMax',    company: 'MiniMax',       link: 'https://www.minimax.com',        desc: '长文本推理新锐',                       group: 'domestic' },
     ];
 
-    // ─── Opened windows tracking ───
-    const opened = new Map(); // key: name, value: { window, name, company, color, focused }
+    let currentSvc = null;
+    const frame = document.getElementById('main-frame');
+    const welcome = document.getElementById('welcome');
+    const errorOverlay = document.getElementById('embed-error');
+    const errorMsg = document.getElementById('error-msg');
+    const errorLink = document.getElementById('error-link');
 
-    function updateDock() {
-        const container = document.getElementById('dock-items');
-        const empty = document.getElementById('dock-empty');
-        const count = document.getElementById('dock-count');
-        container.innerHTML = '';
+    // ─── Render Sidebar ───
+    function renderSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.innerHTML = '';
 
-        // Clean closed windows
-        for (const [name, entry] of opened) {
-            if (entry.window && entry.window.closed) {
-                opened.delete(name);
-                updateCardStatus(name, false);
+        services.forEach((svc, i) => {
+            if (i === 7) { // after overseas
+                const div = document.createElement('div');
+                div.className = 'divider';
+                sidebar.appendChild(div);
             }
-        }
 
-        if (opened.size === 0) {
-            empty.style.display = 'block';
-            count.textContent = '';
-            return;
-        }
-        empty.style.display = 'none';
-        count.textContent = `${opened.size} 个`;
-
-        for (const [name, entry] of opened) {
-            const item = document.createElement('div');
-            item.className = 'dock-item' + (entry.focused ? ' focused' : '');
-            item.innerHTML = `
-                <span class="dot" style="background:${entry.color}"></span>
-                <span>${entry.name}</span>
-                <button class="close-btn" title="关闭">✕</button>
+            const btn = document.createElement('button');
+            btn.className = 'sb-item';
+            btn.dataset.name = svc.name;
+            btn.innerHTML = `
+                <span class="indicator"></span>
+                ${svc.name}
+                <span class="dot" style="background:${colors[i % colors.length]}"></span>
             `;
-            // Click item → focus window
-            item.addEventListener('click', (e) => {
-                if (e.target.closest('.close-btn')) return;
-                if (entry.window && !entry.window.closed) {
-                    entry.window.focus();
-                }
-            });
-            // Close button
-            item.querySelector('.close-btn').addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (entry.window && !entry.window.closed) entry.window.close();
-                opened.delete(name);
-                updateCardStatus(name, false);
-                updateDock();
-            });
-            container.appendChild(item);
-        }
-    }
+            btn.title = `${svc.name} - ${svc.company}`;
+            btn.addEventListener('click', () => selectService(svc));
+            sidebar.appendChild(btn);
+        });
 
-    function updateCardStatus(name, isOpen) {
-        document.querySelectorAll('.card').forEach(card => {
-            if (card.dataset.name === name) {
-                const status = card.querySelector('.card-status') || (() => {
-                    const el = document.createElement('div');
-                    el.className = 'card-status';
-                    card.appendChild(el);
-                    return el;
-                })();
-                el.textContent = '已打开';
-                el.classList.toggle('open', isOpen);
-            }
+        // Theme toggle at bottom
+        const themeBtn = document.createElement('button');
+        themeBtn.className = 'theme-btn';
+        themeBtn.id = 'theme-btn';
+        themeBtn.textContent = '🌙';
+        themeBtn.title = '切换主题';
+        themeBtn.addEventListener('click', toggleTheme);
+        sidebar.appendChild(themeBtn);
+
+        // Quick shortcuts
+        const quickList = document.getElementById('quick-list');
+        ['ChatGPT', '豆包', 'DeepSeek', 'Kimi'].forEach(name => {
+            const svc = services.find(s => s.name === name);
+            if (!svc) return;
+            const span = document.createElement('span');
+            span.textContent = svc.name;
+            span.addEventListener('click', () => selectService(svc));
+            quickList.appendChild(span);
         });
     }
 
-    function openService(svc) {
-        // If already open and not closed, focus it
-        const existing = opened.get(svc.name);
-        if (existing && existing.window && !existing.window.closed) {
-            existing.window.focus();
-            // Mark as focused
-            for (const [, e] of opened) e.focused = false;
-            existing.focused = true;
-            updateDock();
-            return;
-        }
+    // ─── Select Service ───
+    function selectService(svc) {
+        currentSvc = svc;
 
-        // Open new window
-        const w = window.open(svc.link, svc.name, 'width=1200,height=800,menubar=no,toolbar=no,location=yes,status=yes');
-        if (!w) {
-            // Popup blocked — fallback to direct navigation
-            window.open(svc.link, '_blank');
-            return;
-        }
-
-        // Mark all as not focused, then set this one
-        for (const [, e] of opened) e.focused = false;
-        opened.set(svc.name, { window: w, name: svc.name, company: svc.company, color: svc._color, focused: true });
-        updateCardStatus(svc.name, true);
-        updateDock();
-
-        // Poll for window close
-        const poll = setInterval(() => {
-            if (w.closed) {
-                clearInterval(poll);
-                if (opened.has(svc.name)) {
-                    opened.delete(svc.name);
-                    updateCardStatus(svc.name, false);
-                    updateDock();
-                }
-            }
-        }, 1000);
-    }
-
-    // ─── Render Cards ───
-    function getInitials(name) {
-        return /^[a-zA-Z]/.test(name) ? name.charAt(0).toUpperCase() : name.charAt(0);
-    }
-
-    function renderCards() {
-        ['overseas', 'domestic'].forEach(group => {
-            const grid = document.getElementById(group + '-grid');
-            services.filter(s => s.group === group).forEach((svc) => {
-                const idx = services.indexOf(svc);
-                const color = colors[idx % colors.length];
-                svc._color = color;
-
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.dataset.name = svc.name;
-                card.dataset.group = svc.group;
-                card.innerHTML = `
-                    <span class="card-arrow">↗</span>
-                    <div class="card-header">
-                        <div class="card-icon" style="background:${color}">${getInitials(svc.name)}</div>
-                        <div>
-                            <div class="card-name">${svc.name}</div>
-                            <div class="card-company">${svc.company}</div>
-                        </div>
-                    </div>
-                    <div class="card-desc">${svc.desc}</div>
-                    <span class="card-tag ${svc.tagType === 'free' ? 'tag-free' : 'tag-limited'}">${svc.tag}</span>
-                `;
-                card.addEventListener('click', () => openService(svc));
-                grid.appendChild(card);
-            });
+        // Update sidebar active state
+        document.querySelectorAll('.sb-item').forEach(el => {
+            el.classList.toggle('active', el.dataset.name === svc.name);
         });
-        updateStats();
+
+        // Update topbar
+        document.getElementById('tb-title').textContent = `${svc.name} — ${svc.company}`;
+        document.getElementById('tb-url').textContent = svc.link;
+
+        // Hide welcome, show iframe
+        welcome.style.display = 'none';
+        errorOverlay.style.display = 'none';
+        frame.style.display = 'block';
+
+        // Load in iframe
+        frame.src = svc.link;
+
+        // Handle iframe load error (embedding blocked)
+        frame.onload = () => {
+            // If iframe loaded but content is blocked, the load event might still fire
+            // We'll use a timeout to detect if content is accessible
+        };
+
+        // Try to detect if embedding is blocked by checking if content is same-origin
+        // Due to sandbox, we can't actually read frame.contentDocument, so we show a note
+        // that some services may not display correctly
+        errorLink.href = svc.link;
     }
 
-    // ─── Filter ───
-    let currentFilter = 'all';
-
-    function setFilter(filter, btn) {
-        currentFilter = filter;
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        btn.classList.add('active');
-        filterCards();
+    // ─── Open in new window ───
+    function openInNewWindow() {
+        if (!currentSvc) return;
+        window.open(currentSvc.link, currentSvc.name, 'width=1200,height=800');
     }
 
-    function filterCards() {
-        const search = document.getElementById('search').value.trim().toLowerCase();
-        document.querySelectorAll('.card').forEach(card => {
-            const name = card.dataset.name.toLowerCase();
-            const group = card.dataset.group;
-            const matchSearch = !search || name.includes(search);
-            const matchFilter = currentFilter === 'all' || group === currentFilter;
-            card.classList.toggle('hidden', !(matchSearch && matchFilter));
-        });
-        document.querySelectorAll('.section-title')[0].style.display =
-            document.querySelectorAll('#overseas-grid .card:not(.hidden)').length ? 'block' : 'none';
-        document.querySelectorAll('.section-title')[1].style.display =
-            document.querySelectorAll('#domestic-grid .card:not(.hidden)').length ? 'block' : 'none';
-        updateStats();
+    function refreshIframe() {
+        if (!currentSvc) return;
+        frame.src = currentSvc.link;
+        errorOverlay.style.display = 'none';
     }
 
-    function updateStats() {
-        document.getElementById('stats').textContent =
-            `共 ${document.querySelectorAll('.card:not(.hidden)').length} 个 AI 服务`;
-    }
-
+    // ─── Theme ───
     function toggleTheme() {
-        document.body.classList.toggle('dark');
-        document.querySelector('.theme-toggle').textContent =
-            document.body.classList.contains('dark') ? '☀️' : '🌙';
+        document.body.classList.toggle('light');
+        const btn = document.getElementById('theme-btn');
+        const isLight = document.body.classList.contains('light');
+        btn.textContent = isLight ? '☀️' : '🌙';
     }
 
-    renderCards();
+    // ─── Init ───
+    renderSidebar();
 </script>
 </body>
 </html>
