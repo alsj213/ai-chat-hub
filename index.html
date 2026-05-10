@@ -8,23 +8,22 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; overflow: hidden; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
             background: #1e1e2e;
             color: #cdd6f4;
             display: flex;
-            transition: background 0.3s;
+            transition: background 0.2s;
         }
         body.light { background: #f5f5f5; color: #333; }
 
-        /* ─── Left Sidebar ─── */
+        /* ─── Sidebar ─── */
         .sidebar {
-            width: 64px;
+            width: 170px;
             background: #181825;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 12px 0;
-            gap: 2px;
+            padding: 8px 0;
+            gap: 1px;
             overflow-y: auto;
             flex-shrink: 0;
             border-right: 1px solid #313244;
@@ -35,107 +34,102 @@
             border-right-color: #ccc;
         }
 
-        .sidebar .divider {
-            width: 32px;
-            height: 1px;
-            background: #45475a;
-            margin: 6px 0;
+        .sidebar .title-bar {
+            padding: 10px 14px 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6c7086;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             flex-shrink: 0;
         }
-        body.light .sidebar .divider { background: #bbb; }
+        body.light .sidebar .title-bar { color: #999; }
 
         .sb-item {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 10px;
+            padding: 9px 14px;
             cursor: pointer;
-            position: relative;
-            transition: all 0.15s;
-            flex-shrink: 0;
             border: none;
             background: transparent;
             color: #a6adc8;
-            font-size: 0.7rem;
-            writing-mode: vertical-rl;
-            letter-spacing: 2px;
+            font-size: 0.85rem;
             font-weight: 500;
+            transition: all 0.1s;
+            text-align: left;
+            width: 100%;
+            position: relative;
+            border-radius: 0;
         }
-        .sb-item:hover { background: rgba(255,255,255,0.08); color: #cdd6f4; }
+        .sb-item:hover { background: rgba(255,255,255,0.06); color: #cdd6f4; }
         .sb-item.active {
-            background: #cba6f7;
-            color: #1e1e2e;
-            font-weight: 700;
-            box-shadow: 0 0 12px rgba(203,166,247,0.3);
+            background: rgba(203,166,247,0.15);
+            color: #cba6f7;
         }
-        body.light .sb-item { color: #666; }
-        body.light .sb-item:hover { background: rgba(0,0,0,0.06); color: #333; }
-        body.light .sb-item.active {
-            background: #7c3aed;
-            color: white;
-            box-shadow: 0 0 12px rgba(124,58,237,0.25);
-        }
-
-        .sb-item .indicator {
+        .sb-item.active::before {
+            content: '';
             position: absolute;
-            left: -4px;
-            top: 50%;
-            transform: translateY(-50%);
+            left: 0;
+            top: 6px;
+            bottom: 6px;
             width: 3px;
-            height: 20px;
             border-radius: 0 3px 3px 0;
             background: #cba6f7;
-            opacity: 0;
-            transition: opacity 0.15s;
         }
-        .sb-item.active .indicator { opacity: 1; }
-        body.light .sb-item .indicator { background: #7c3aed; }
+        body.light .sb-item { color: #666; }
+        body.light .sb-item:hover { background: rgba(0,0,0,0.05); color: #333; }
+        body.light .sb-item.active {
+            background: rgba(124,58,237,0.1);
+            color: #7c3aed;
+        }
+        body.light .sb-item.active::before { background: #7c3aed; }
 
-        .sb-item .dot {
-            position: absolute;
-            bottom: 4px;
-            right: 4px;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            border: 2px solid #181825;
+        .sb-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
         }
-        body.light .sb-item .dot { border-color: #e8e8e8; }
+        .sb-name { flex: 1; }
+        .sb-tag {
+            font-size: 0.6rem;
+            padding: 1px 6px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            color: #6c7086;
+            flex-shrink: 0;
+        }
+        body.light .sb-tag { background: rgba(0,0,0,0.06); color: #999; }
 
         /* ─── Top Bar ─── */
         .topbar {
-            height: 40px;
+            height: 36px;
             background: #181825;
             border-bottom: 1px solid #313244;
             display: flex;
             align-items: center;
-            padding: 0 16px;
-            gap: 12px;
+            padding: 0 12px;
+            gap: 8px;
             flex-shrink: 0;
         }
-        body.light .topbar {
-            background: #e8e8e8;
-            border-bottom-color: #ccc;
-        }
-
-        .topbar .title {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #cdd6f4;
-        }
-        body.light .topbar .title { color: #333; }
+        body.light .topbar { background: #e8e8e8; border-bottom-color: #ccc; }
 
         .topbar .url-bar {
             flex: 1;
-            max-width: 500px;
-            padding: 4px 12px;
-            border-radius: 6px;
-            border: 1px solid #45475a;
-            background: #313244;
-            color: #a6adc8;
-            font-size: 0.75rem;
+            max-width: 450px;
+            padding: 3px 10px;
+            border-radius: 5px;
+            border: 1px solid #313244;
+            background: #11111b;
+            color: #6c7086;
+            font-size: 0.72rem;
             font-family: monospace;
             white-space: nowrap;
             overflow: hidden;
@@ -144,331 +138,219 @@
         body.light .topbar .url-bar {
             background: #ddd;
             border-color: #bbb;
-            color: #666;
+            color: #888;
         }
 
         .topbar .actions {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             margin-left: auto;
         }
         .topbar .actions button {
-            padding: 4px 10px;
-            border-radius: 6px;
-            border: 1px solid #45475a;
+            padding: 3px 10px;
+            border-radius: 5px;
+            border: 1px solid #313244;
             background: transparent;
-            color: #a6adc8;
+            color: #6c7086;
             cursor: pointer;
-            font-size: 0.75rem;
-            transition: all 0.15s;
+            font-size: 0.72rem;
+            transition: all 0.1s;
+            white-space: nowrap;
         }
-        .topbar .actions button:hover {
-            background: #45475a;
-            color: #cdd6f4;
-        }
-        body.light .topbar .actions button {
-            border-color: #bbb;
-            color: #666;
-        }
-        body.light .topbar .actions button:hover {
-            background: #ccc;
-            color: #333;
-        }
+        .topbar .actions button:hover { background: #313244; color: #cdd6f4; }
+        body.light .topbar .actions button { border-color: #bbb; color: #888; }
+        body.light .topbar .actions button:hover { background: #ccc; color: #333; }
 
-        /* ─── Main Content Area ─── */
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
+        .topbar .svc-name {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #cdd6f4;
+            white-space: nowrap;
         }
-        .content {
-            flex: 1;
-            position: relative;
-            background: #1e1e2e;
-        }
+        body.light .topbar .svc-name { color: #333; }
+
+        /* ─── Content ─── */
+        .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .content { flex: 1; position: relative; background: #1e1e2e; }
         body.light .content { background: #f5f5f5; }
 
         .content iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
+            width: 100%; height: 100%;
+            border: none; display: block;
         }
 
-        /* Welcome screen */
         .welcome {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            color: #6c7086;
-            text-align: center;
-            padding: 40px;
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 16px; color: #6c7086;
+            text-align: center; padding: 40px;
         }
         body.light .welcome { color: #999; }
-
-        .welcome h2 { font-size: 1.5rem; font-weight: 600; color: #a6adc8; }
+        .welcome h2 { font-size: 1.4rem; font-weight: 600; color: #a6adc8; }
         body.light .welcome h2 { color: #666; }
-        .welcome p { font-size: 0.9rem; max-width: 400px; line-height: 1.6; }
-        .welcome .shortcuts {
-            display: flex; gap: 16px; margin-top: 8px;
-        }
-        .welcome .shortcuts span {
-            padding: 6px 14px; border-radius: 8px;
-            background: #313244; color: #a6adc8;
-            font-size: 0.8rem; cursor: pointer;
-            transition: all 0.15s;
-        }
-        body.light .welcome .shortcuts span {
-            background: #e0e0e0; color: #666;
-        }
-        .welcome .shortcuts span:hover {
-            background: #cba6f7; color: #1e1e2e;
-        }
-        body.light .welcome .shortcuts span:hover {
-            background: #7c3aed; color: white;
-        }
+        .welcome p { font-size: 0.85rem; max-width: 360px; line-height: 1.6; }
 
-        /* Blocked/error overlay */
-        .embed-error {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: #1e1e2e;
-            color: #6c7086;
-            padding: 40px;
-            text-align: center;
+        .welcome .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 4px;
         }
-        body.light .embed-error { background: #f5f5f5; color: #999; }
-        .embed-error h3 { color: #f38ba8; font-size: 1.1rem; }
-        body.light .embed-error h3 { color: #e64553; }
-        .embed-error .btn-open {
-            padding: 8px 24px;
+        .welcome .quick-grid span {
+            padding: 8px 20px;
             border-radius: 8px;
+            background: #313244;
+            color: #a6adc8;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        body.light .welcome .quick-grid span { background: #e0e0e0; color: #666; }
+        .welcome .quick-grid span:hover {
             background: #cba6f7;
             color: #1e1e2e;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.15s;
         }
-        .embed-error .btn-open:hover { background: #b4befe; }
-        body.light .embed-error .btn-open {
-            background: #7c3aed;
-            color: white;
-        }
-        body.light .embed-error .btn-open:hover { background: #6d28d9; }
+        body.light .welcome .quick-grid span:hover { background: #7c3aed; color: white; }
 
-        /* ─── Scrollbar ─── */
-        .sidebar::-webkit-scrollbar { width: 3px; }
-        .sidebar::-webkit-scrollbar-thumb { background: #45475a; border-radius: 3px; }
-        body.light .sidebar::-webkit-scrollbar-thumb { background: #bbb; }
-
-        /* ─── Theme toggle ─── */
+        /* ─── Theme ─── */
         .theme-btn {
             margin-top: auto;
-            width: 48px; height: 48px;
-            border-radius: 10px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
+            padding: 10px 14px;
             cursor: pointer;
             background: transparent;
             border: none;
             color: #6c7086;
-            font-size: 1.1rem;
-            transition: all 0.15s;
-            flex-shrink: 0;
+            font-size: 0.82rem;
+            transition: all 0.1s;
+            width: 100%;
+            text-align: left;
         }
-        .theme-btn:hover { background: rgba(255,255,255,0.08); color: #cdd6f4; }
-        body.light .theme-btn:hover { background: rgba(0,0,0,0.06); color: #333; }
+        .theme-btn:hover { background: rgba(255,255,255,0.06); color: #cdd6f4; }
+        body.light .theme-btn:hover { background: rgba(0,0,0,0.05); color: #333; }
 
-        @media (max-width: 700px) {
-            .sidebar { width: 48px; }
-            .sb-item { width: 36px; height: 36px; font-size: 0.6rem; }
-            .sidebar .divider { width: 24px; }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #313244; border-radius: 3px; }
+        body.light .sidebar::-webkit-scrollbar-thumb { background: #bbb; }
+
+        @media (max-width: 600px) {
+            .sidebar { width: 140px; }
+            .sb-item { padding: 7px 10px; font-size: 0.78rem; }
+            .sb-icon { width: 22px; height: 22px; font-size: 0.75rem; }
         }
     </style>
 </head>
 <body>
 
-<!-- ─── Sidebar ─── -->
 <nav class="sidebar" id="sidebar"></nav>
 
-<!-- ─── Main ─── -->
 <div class="main">
     <div class="topbar">
-        <span class="title" id="tb-title">选择一个 AI 服务</span>
+        <span class="svc-name" id="tb-name">选择一个 AI</span>
         <span class="url-bar" id="tb-url"></span>
         <div class="actions">
-            <button id="btn-open" title="在新窗口打开" onclick="openInNewWindow()">↗ 新窗口</button>
-            <button id="btn-refresh" title="刷新" onclick="refreshIframe()">⟳</button>
+            <button onclick="openNewWin()" title="在新窗口打开">↗ 新窗口</button>
+            <button onclick="refreshFrame()" title="刷新">⟳</button>
         </div>
     </div>
     <div class="content" id="content-area">
-        <!-- Welcome -->
         <div class="welcome" id="welcome">
-            <h2>AI Chat Hub</h2>
-            <p>左侧选择 AI 服务，即可在此嵌入使用。部分服务可能限制嵌入，届时可点击「新窗口」打开。</p>
-            <div class="shortcuts" id="quick-list"></div>
+            <h2>🤖 AI Chat Hub</h2>
+            <p>左侧选择 AI 服务，即可在此嵌入使用。<br/>部分服务限制嵌入，可点击「新窗口」打开。</p>
+            <div class="quick-grid" id="quick-list"></div>
         </div>
-        <!-- iframe -->
         <iframe id="main-frame" style="display:none;" sandbox="allow-scripts allow-forms allow-same-origin allow-popups" loading="lazy"></iframe>
-        <!-- Error overlay (hidden by default) -->
-        <div class="embed-error" id="embed-error" style="display:none;">
-            <h3>⚠️ 此服务可能不支持嵌入</h3>
-            <p id="error-msg">该网站限制了在 iframe 中显示，点击「新窗口」按钮在独立窗口中打开。</p>
-            <a class="btn-open" id="error-link" href="#" target="_blank">在新窗口打开</a>
-        </div>
     </div>
 </div>
 
 <script>
-    const colors = [
-        '#10a37f', '#6c5ce7', '#4285f4', '#00a4ef', '#3b82f6',
-        '#1da1f2', '#ff6b6b', '#ff6b35', '#7c3aed', '#0891b2',
-        '#059669', '#d97706', '#dc2626', '#2563eb', '#7c3aed',
-        '#db2777', '#ea580c', '#16a34a', '#0d9488', '#4f46e5'
+    const svcList = [
+        { name: '豆包',     ico: '🫘', bg: '#1e9b5e', link: 'https://www.doubao.com',        tag: '免费' },
+        { name: 'DeepSeek', ico: '🐋', bg: '#4f6ef7', link: 'https://chat.deepseek.com',     tag: '免费' },
+        { name: '通义千问', ico: '🌐', bg: '#ff6a00', link: 'https://tongyi.aliyun.com',     tag: '免费' },
+        { name: 'Kimi',     ico: '🌙', bg: '#7c3aed', link: 'https://kimi.moonshot.cn',      tag: '免费' },
+        { name: '文心一言', ico: '📝', bg: '#2158f0', link: 'https://yiyan.baidu.com',       tag: '免费' },
+        { name: '智谱清言', ico: '🧠', bg: '#0ba5e9', link: 'https://chatglm.cn',            tag: '免费' },
+        { name: '讯飞星火', ico: '🔥', bg: '#d92e1e', link: 'https://xinghuo.xfyun.cn',      tag: '免费' },
+        { name: '腾讯元宝', ico: '💎', bg: '#0057d9', link: 'https://yuanbao.tencent.com',   tag: '免费' },
+        { name: '百川智能', ico: '🌊', bg: '#0077b6', link: 'https://www.baichuan-ai.com',   tag: '免费' },
+        { name: '天工',     ico: '⚒️', bg: '#e85d2c', link: 'https://www.kunlungp.com',      tag: '免费' },
+        { name: 'MiniMax',  ico: '✨', bg: '#a855f7', link: 'https://www.minimax.com',       tag: '免费' },
     ];
 
-    const services = [
-        { name: 'ChatGPT',    company: 'OpenAI',        link: 'https://chat.openai.com',        desc: '综合能力全面的 AI 对话助手',           group: 'overseas' },
-        { name: 'Claude',     company: 'Anthropic',     link: 'https://claude.ai',              desc: '长文理解与写作质感出色',               group: 'overseas' },
-        { name: 'Gemini',     company: 'Google',        link: 'https://gemini.google.com',      desc: 'Google 多模态旗舰',                   group: 'overseas' },
-        { name: 'Copilot',    company: 'Microsoft',     link: 'https://copilot.microsoft.com',  desc: 'Office / Windows 深度集成',            group: 'overseas' },
-        { name: 'Perplexity', company: 'Perplexity AI', link: 'https://www.perplexity.ai',      desc: '带来源引用的研究助手',                 group: 'overseas' },
-        { name: 'Grok',       company: 'xAI',           link: 'https://grok.com',               desc: '实时信息与社交平台语境分析',            group: 'overseas' },
-        { name: 'Mistral',    company: 'Mistral AI',    link: 'https://chat.mistral.ai',        desc: '法国 AI 新锐，简洁高效',               group: 'overseas' },
-        // domestic
-        { name: '豆包',       company: '字节跳动',      link: 'https://www.doubao.com',         desc: '完全免费，中文交互自然流畅',            group: 'domestic' },
-        { name: 'DeepSeek',   company: '深度求索',      link: 'https://chat.deepseek.com',      desc: '推理编程突出，完全免费开源',            group: 'domestic' },
-        { name: '通义千问',   company: '阿里巴巴',      link: 'https://tongyi.aliyun.com',      desc: '中文通用能力强，开源生态领先',          group: 'domestic' },
-        { name: 'Kimi',       company: '月之暗面',      link: 'https://kimi.moonshot.cn',       desc: '超长上下文，文档阅读行业领先',          group: 'domestic' },
-        { name: '文心一言',   company: '百度',          link: 'https://yiyan.baidu.com',        desc: '中文理解创作突出，搜索生态',            group: 'domestic' },
-        { name: '智谱清言',   company: '智谱 AI',       link: 'https://chatglm.cn',             desc: '清华系，推理编程与 Agent 领先',         group: 'domestic' },
-        { name: '讯飞星火',   company: '科大讯飞',      link: 'https://xinghuo.xfyun.cn',       desc: '知识问答与教育场景突出',               group: 'domestic' },
-        { name: '腾讯元宝',   company: '腾讯',          link: 'https://yuanbao.tencent.com',    desc: '社交聊天与生活助手体验',               group: 'domestic' },
-        { name: '百川智能',   company: '百川',          link: 'https://www.baichuan-ai.com',    desc: '搜索增强与知识问答',                   group: 'domestic' },
-        { name: '天工',       company: '昆仑万维',      link: 'https://www.kunlungp.com',       desc: '内容创作与办公自动化',                 group: 'domestic' },
-        { name: 'MiniMax',    company: 'MiniMax',       link: 'https://www.minimax.com',        desc: '长文本推理新锐',                       group: 'domestic' },
-    ];
-
-    let currentSvc = null;
+    let cur = null;
     const frame = document.getElementById('main-frame');
     const welcome = document.getElementById('welcome');
-    const errorOverlay = document.getElementById('embed-error');
-    const errorMsg = document.getElementById('error-msg');
-    const errorLink = document.getElementById('error-link');
 
-    // ─── Render Sidebar ───
-    function renderSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.innerHTML = '';
+    function render() {
+        const sb = document.getElementById('sidebar');
+        sb.innerHTML = '<div class="title-bar">AI 服务</div>';
 
-        services.forEach((svc, i) => {
-            if (i === 7) { // after overseas
-                const div = document.createElement('div');
-                div.className = 'divider';
-                sidebar.appendChild(div);
-            }
-
+        svcList.forEach(s => {
             const btn = document.createElement('button');
             btn.className = 'sb-item';
-            btn.dataset.name = svc.name;
+            btn.dataset.name = s.name;
             btn.innerHTML = `
-                <span class="indicator"></span>
-                ${svc.name}
-                <span class="dot" style="background:${colors[i % colors.length]}"></span>
+                <span class="sb-icon" style="background:${s.bg}">${s.ico}</span>
+                <span class="sb-name">${s.name}</span>
+                <span class="sb-tag">${s.tag}</span>
             `;
-            btn.title = `${svc.name} - ${svc.company}`;
-            btn.addEventListener('click', () => selectService(svc));
-            sidebar.appendChild(btn);
+            btn.addEventListener('click', () => select(s));
+            sb.appendChild(btn);
         });
 
-        // Theme toggle at bottom
-        const themeBtn = document.createElement('button');
-        themeBtn.className = 'theme-btn';
-        themeBtn.id = 'theme-btn';
-        themeBtn.textContent = '🌙';
-        themeBtn.title = '切换主题';
-        themeBtn.addEventListener('click', toggleTheme);
-        sidebar.appendChild(themeBtn);
+        // Theme toggle
+        const tb = document.createElement('button');
+        tb.className = 'theme-btn';
+        tb.id = 'theme-btn';
+        tb.innerHTML = '<span>🌙</span><span>深色模式</span>';
+        tb.addEventListener('click', toggleTheme);
+        sb.appendChild(tb);
 
         // Quick shortcuts
-        const quickList = document.getElementById('quick-list');
-        ['ChatGPT', '豆包', 'DeepSeek', 'Kimi'].forEach(name => {
-            const svc = services.find(s => s.name === name);
-            if (!svc) return;
-            const span = document.createElement('span');
-            span.textContent = svc.name;
-            span.addEventListener('click', () => selectService(svc));
-            quickList.appendChild(span);
+        const ql = document.getElementById('quick-list');
+        ['豆包', 'DeepSeek', 'Kimi', '通义千问'].forEach(n => {
+            const s = svcList.find(x => x.name === n);
+            if (!s) return;
+            const el = document.createElement('span');
+            el.textContent = `${s.ico} ${s.name}`;
+            el.addEventListener('click', () => select(s));
+            ql.appendChild(el);
         });
     }
 
-    // ─── Select Service ───
-    function selectService(svc) {
-        currentSvc = svc;
+    function select(s) {
+        cur = s;
+        document.querySelectorAll('.sb-item').forEach(el =>
+            el.classList.toggle('active', el.dataset.name === s.name)
+        );
+        document.getElementById('tb-name').textContent = `${s.ico} ${s.name}`;
+        document.getElementById('tb-url').textContent = s.link;
 
-        // Update sidebar active state
-        document.querySelectorAll('.sb-item').forEach(el => {
-            el.classList.toggle('active', el.dataset.name === svc.name);
-        });
-
-        // Update topbar
-        document.getElementById('tb-title').textContent = `${svc.name} — ${svc.company}`;
-        document.getElementById('tb-url').textContent = svc.link;
-
-        // Hide welcome, show iframe
         welcome.style.display = 'none';
-        errorOverlay.style.display = 'none';
         frame.style.display = 'block';
-
-        // Load in iframe
-        frame.src = svc.link;
-
-        // Handle iframe load error (embedding blocked)
-        frame.onload = () => {
-            // If iframe loaded but content is blocked, the load event might still fire
-            // We'll use a timeout to detect if content is accessible
-        };
-
-        // Try to detect if embedding is blocked by checking if content is same-origin
-        // Due to sandbox, we can't actually read frame.contentDocument, so we show a note
-        // that some services may not display correctly
-        errorLink.href = svc.link;
+        frame.src = s.link;
     }
 
-    // ─── Open in new window ───
-    function openInNewWindow() {
-        if (!currentSvc) return;
-        window.open(currentSvc.link, currentSvc.name, 'width=1200,height=800');
+    function openNewWin() {
+        if (cur) window.open(cur.link, cur.name, 'width=1200,height=800');
     }
 
-    function refreshIframe() {
-        if (!currentSvc) return;
-        frame.src = currentSvc.link;
-        errorOverlay.style.display = 'none';
+    function refreshFrame() {
+        if (cur) { frame.src = cur.link; }
     }
 
-    // ─── Theme ───
     function toggleTheme() {
         document.body.classList.toggle('light');
-        const btn = document.getElementById('theme-btn');
         const isLight = document.body.classList.contains('light');
-        btn.textContent = isLight ? '☀️' : '🌙';
+        document.getElementById('theme-btn').innerHTML =
+            `<span>${isLight ? '☀️' : '🌙'}</span><span>${isLight ? '浅色模式' : '深色模式'}</span>`;
     }
 
-    // ─── Init ───
-    renderSidebar();
+    render();
 </script>
 </body>
 </html>
